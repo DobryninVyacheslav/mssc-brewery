@@ -3,6 +3,8 @@ package guru.springframework.msscbrewery.web.controller.v2;
 import guru.springframework.msscbrewery.services.v2.BeerServiceV2;
 import guru.springframework.msscbrewery.web.model.v2.BeerDtoV2;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.UUID;
 
+@Slf4j
 @RequestMapping("/api/v2/beer")
 @RestController
 @RequiredArgsConstructor
@@ -33,8 +36,9 @@ public class BeerControllerV2 {
 
     @PostMapping
     public ResponseEntity handlePost(@Valid @RequestBody BeerDtoV2 beerDto) {
-        BeerDtoV2 savedDto = beerService.saveNewBeer(beerDto);
-        HttpHeaders headers = new HttpHeaders();
+        log.debug("in handle post...");
+        val savedDto = beerService.saveNewBeer(beerDto);
+        val headers = new HttpHeaders();
         //todo add hostname to utl
         headers.add("Location", "/api/v1/beer" +
                 savedDto.getId().toString());
